@@ -35,3 +35,14 @@ def test_string_to_number():
     assert Item.string_to_number('5.0') == 5
     assert Item.string_to_number('5.5') == 5
     assert Item.string_to_number('not_number') is None
+
+
+item1 = Item('Телевизор', 45_000, 4)
+
+
+def test_str():
+    assert str(item1) == 'Телевизор'
+
+
+def test_repr():
+    assert repr(item1) == "Item('Телевизор', 45000, 4)"
