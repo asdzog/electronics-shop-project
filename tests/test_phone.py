@@ -27,3 +27,10 @@ item1 = Item('Телевизор', 45_000, 4)
 def test_add():
     assert item1 + phone1 == 9
     assert phone1 + phone1 == 10
+
+
+def test_number_of_sim():
+    with pytest.raises(ValueError) as excinfo:
+        phone1.number_of_sim = 0
+    exception_msg = excinfo.value.args[0]
+    assert exception_msg == "Количество физических SIM-карт должно быть целым числом больше нуля."
