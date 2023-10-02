@@ -46,3 +46,7 @@ def test_str():
 
 def test_repr():
     assert repr(item1) == "Item('Телевизор', 45000, 4)"
+
+
+
+
