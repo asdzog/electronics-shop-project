@@ -23,7 +23,7 @@ class Phone(Item):
 
     def __setattr__(self, key, value):
         """
-
+        Проверяет валидность параметра numbers_of_sim
         """
         if key == 'number_of_sim' and not self._is_valid_number_of_sim(value):
             raise ValueError('Количество физических SIM-карт должно быть целым числом больше нуля.')
