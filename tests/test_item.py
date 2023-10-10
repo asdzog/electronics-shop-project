@@ -26,11 +26,6 @@ def test_apply_discount(test_item):
 
 
 def test_instantiate_from_csv():
-    Item.instantiate_from_csv('items.csv')
-    assert len(Item.all) == 5
-
-
-def test_instantiate_from_csv():
     Item.instantiate_from_csv()
     assert len(Item.all) == 5
     with pytest.raises(InstantiateCSVError):
