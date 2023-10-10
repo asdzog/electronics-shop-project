@@ -2,6 +2,14 @@ from csv import DictReader
 import os
 
 
+class InstantiateCSVError(Exception):
+    """
+    Класс исключения для случая повреждения файла
+    """
+    def __init__(self, *args, **kwargs):
+        self.message = args[0] if args else 'Файл item.csv поврежден'
+
+
 class Item:
     """
     Класс для представления товара в магазине.
@@ -57,20 +65,29 @@ class Item:
         self.price *= Item.pay_rate
 
     @classmethod
-    def instantiate_from_csv(cls, csv_file):
+    def instantiate_from_csv(cls, csv_file: str = '../src/items.csv'):
         """
         Инициализирует экземпляры класса данными из файла items.csv
         """
-        Item.all = []
-        current_dir = os.path.dirname(os.path.realpath(__file__))
-        items_file_path = os.path.join(current_dir, csv_file)
-        with open(items_file_path, 'r', encoding='windows-1251') as csv:
-            items = DictReader(csv)
-            for product in items:
-                name = product['name']
-                price = Item.string_to_number(product['price'])
-                count = Item.string_to_number(product['quantity'])
-                Item(name, price, count)
+        try:
+            cls.all = []
+            current_dir = os.path.dirname(os.path.realpath(__file__))
+            items_file_path = os.path.join(current_dir, csv_file)
+            with open(items_file_path, encoding='windows-1251') as csv_data:
+                items = DictReader(csv_data)
+                if len(items.fieldnames) != 3:
+                    raise InstantiateCSVError
+                for product in items:
+                    name = product['name']
+                    price = Item.string_to_number(product['price'])
+                    count = Item.string_to_number(product['quantity'])
+                    Item(name, price, count)
+        except FileNotFoundError:
+            print("FileNotFoundError: 'Отсутствует файл item.csv'")
+            raise
+        except InstantiateCSVError as ex:
+            print(ex.message)
+            raise
 
     @staticmethod
     def string_to_number(text_line):
